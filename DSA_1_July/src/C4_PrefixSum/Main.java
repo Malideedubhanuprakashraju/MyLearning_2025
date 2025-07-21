@@ -54,6 +54,101 @@ public class Main
 			 System.out.print(x+" ");
 		 }
 		 //if(i%2==1)psum--->Gives Sum of Odd Index Elemnts In Range
+		 //Equilibrium Index
+		 //Given Array Elemnts, Count no of Equilibrium Index
+		 //Equilibrum index= Sum of all ements on left of ith index= Sum of all elementrs on right of ith index
+		 //For Evry i :
+		 //Iterate & Calculating sum of left & right is Taking Time
+		 //0,1,2,.......i-1,i,i+1,i+2......N-1
+		 //sum[0,i-1]==sum[i+1,n-1];
+		 //It Can be Optimized with Prefix Sum
+		 //Lsum=sum[0...i-1],Rsum=sum[i+1,n-1]
+		 //Lsum=psum[i-1],Rsum=psum[n-1]-psum[i]
+		 System.out.println();
+		 int ar4[]={-7,1,5,2,-4,3,0};
+		 int ans4=equlibrium(ar4);
+		 System.out.println("TC=O(N+N),SC=O(N)----->"+ans4);
+		 //It Can be Done by Without Extra Space--->CarryForward
+		 //Given Array--> Count Number of Special Index in The Array
+		 //Special Index are Those After Removing That Index
+		 //Sum of all Even Indices = Sum of all Odd Indices
+		 int ar5[]= {4,3,2,7,6,-2};
+		 		   //0,1...i-1,i,i+1,i+2.....n-1
+		 //SumE in Del[]=SumE..Ar[0,i-1]+SumO..Ar[i+1,n-1]
+		 //SumO in Del[]=SumO..Ar[0,i-1]+SumE..Ar[i+1,n-1]
+		 int ans5=SpecialIndex(ar5);
+		 System.out.println("Special Indices---->are="+ans5);
+	}
+
+	private static int SpecialIndex(int[] ar) 
+	{
+		int n=ar.length;
+		int c=0;
+		int peven[]=new int[n];
+		int sum=0;
+		for(int i=0;i<n;i++)//Create peven[]
+		{
+			if(i%2==0)
+			{
+				sum=sum+ar[i];
+			}
+			peven[i]=sum;
+		}
+		int podd[]=new int[n];
+		int sum1=0;
+		for(int i=0;i<n;i++)//Create podd[]
+		{
+			if(i%2==1)
+			{
+				sum1=sum1+ar[i];
+			}
+			podd[i]=sum1;
+		}
+		for(int i=0;i<n;i++)//Check it's Special
+		{
+			int leven=0,lodd=0,reven=0,rodd=0;
+			if(i!=0)
+			{
+				leven=peven[i-1];
+			}
+			reven=peven[n-1]-peven[i];
+			if(i!=0)
+			{
+				lodd=podd[i-1];
+			}
+			rodd=podd[n-1]-podd[i];
+			if(leven+rodd==reven+lodd)
+			{
+				c++;
+			}
+		}
+		return c;
+	}
+
+	private static int equlibrium(int[] ar) 
+	{
+		 int n=ar.length;
+		 int psum[]=new int[n];
+		 int sum=0,c=0;
+		 for(int i=0;i<n;i++)
+		 {
+			 sum=sum+ar[i];
+			 psum[i]=sum;
+		 }
+		 for(int i=0;i<n;i++)
+		 {
+			 int lsum=0,rsum=0;
+			 if(i!=0)//if i==0 :psum[-1]*Error
+			 {
+				 lsum=psum[i-1];
+			 }
+			 rsum=psum[n-1]-psum[i];
+			 if(lsum==rsum)
+			 {
+				 c++;
+			 }
+		 }
+		 return c;
 	}
 
 	private static int[] EvenIndexSum(int[] ar3, int[][] mat) 
